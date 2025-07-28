@@ -13,7 +13,7 @@ public class Conexao {
         try {
             Connection connection = DriverManager.getConnection(url, usuario, senha);
                 if (connection != null){
-                    System.out.println("Banco de dado conectado!");
+                    System.out.println("Banco de dados conectado!");
                     return connection;
                 }
         }catch (SQLException e){
