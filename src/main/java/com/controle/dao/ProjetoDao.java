@@ -15,7 +15,7 @@ public class ProjetoDao {
     }
 
     public void criarProjeto(Projeto projeto){
-        String sql = "INSERT INTO projetos (nome, descricao, dataInicio, dataFim, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO projetos (nome, descricao, data_inicio, data_fim, status) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
