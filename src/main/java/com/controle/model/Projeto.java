@@ -30,10 +30,6 @@ public class Projeto {
         return projetoId;
     }
 
-    public void setProjetoId(Integer projetoId) {
-        this.projetoId = projetoId;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -95,8 +91,7 @@ public class Projeto {
     @Override
     public String toString() {
         return "Projeto{" +
-                "projetoId=" + projetoId +
-                ", nome='" + nome + '\'' +
+                " nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
