@@ -5,23 +5,31 @@ import com.controle.dao.ProjetoDao;
 import com.controle.model.Projeto;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Iniciando o Controle de Projetos...");
-        
-        // Testando conexão com o banco de dados
+
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectarBanco();
-
-        LocalDate hoje = LocalDate.now();
-        Projeto projeto = new Projeto("Rafael", "Descricao", hoje, hoje.plusDays(30));
-
         ProjetoDao projetoDao = new ProjetoDao(conn);
 
+        LocalDate hoje = LocalDate.now();
+        Projeto projeto = new Projeto("Rafael", "Teste de Atualização", hoje, hoje.plusDays(30));
+
         projetoDao.criarProjeto(projeto);
+
+        projetoDao.deletarProjeto(7);
+
+        List<Projeto> projetos = projetoDao.buscarProjetos();
+
+        for (Projeto p : projetos) {
+            System.out.println(p.toString());
+        }
+
+        projetoDao.atualizaProjeto(projeto, 7);
 
         if (conn != null) {
             try {
