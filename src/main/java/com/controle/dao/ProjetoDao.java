@@ -131,4 +131,27 @@ public class ProjetoDao {
 
         return projetosComTarefas;
     }
+
+    public Map<String, Integer> obterEstatisticasPorStatus() {
+        String sql = "SELECT status, COUNT(*) as quantidade FROM projetos GROUP BY status";
+        Map<String, Integer> estatisticas = new HashMap<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String status = result.getString("status");
+                int quantidade = result.getInt("quantidade");
+                estatisticas.put(status, quantidade);
+            }
+
+            System.out.println("\nEstatísticas por status obtidas: " + estatisticas.size() + " status diferentes");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter estatísticas por status: " + e.getMessage());
+        }
+
+        return estatisticas;
     }
+}
