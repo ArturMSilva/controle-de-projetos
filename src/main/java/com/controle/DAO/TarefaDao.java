@@ -18,7 +18,7 @@ public class TarefaDao {
     }
 
     public void criarTarefa(Tarefa tarefa) {
-        String sql = "INSERT INTO tarefas (projeto_id, titulo, responsavel, prazo, concluida) VALUES (?, ?, ?, ?, ?)";
+        String sql = "CALL adicionar_tarefa(?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -26,7 +26,6 @@ public class TarefaDao {
             statement.setString(2, tarefa.getTitulo());
             statement.setString(3, tarefa.getResponsavel());
             statement.setDate(4, Date.valueOf(tarefa.getPrazo()));
-            statement.setBoolean(5, tarefa.getConcluida());
             statement.executeUpdate();
 
             System.out.println("Tarefa adicionada com sucesso!");
