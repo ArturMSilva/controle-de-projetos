@@ -79,4 +79,26 @@ public class TarefaDao {
             System.out.println("Erro ao atualizar tarefa: " + e.getMessage());
         }
     }
+
+    public int contarTarefasPorProjeto(int projetoId) {
+        String sql = "SELECT COUNT(*) as quantidade_tarefas FROM tarefas WHERE projeto_id = ?";
+        int quantidadeTarefas = 0;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, projetoId);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                quantidadeTarefas = result.getInt("quantidade_tarefas");
+            }
+
+            System.out.println("Quantidade de tarefas do projeto ID " + projetoId + ": " + quantidadeTarefas);
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao contar tarefas do projeto: " + e.getMessage());
+        }
+
+        return quantidadeTarefas;
+    }
 }
