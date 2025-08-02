@@ -4,6 +4,7 @@ import com.controle.dao.Conexao;
 import com.controle.dao.ProjetoDao;
 import com.controle.model.Projeto;
 import com.controle.model.Tarefa;
+import com.controle.ui.Menu;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -15,6 +16,9 @@ public class Main {
 
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectarBanco();
+
+        Menu menu = new Menu();
+        menu.menu();
 
         if (conn != null) {
             try {
