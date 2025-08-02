@@ -1,14 +1,9 @@
 package com.controle;
 
 import com.controle.dao.Conexao;
-import com.controle.dao.ProjetoDao;
-import com.controle.model.Projeto;
-import com.controle.model.Tarefa;
 import com.controle.ui.Menu;
 
 import java.sql.Connection;
-import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
