@@ -3,6 +3,7 @@ package com.controle;
 import com.controle.dao.Conexao;
 import com.controle.dao.ProjetoDao;
 import com.controle.model.Projeto;
+import com.controle.model.Tarefa;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -31,6 +32,8 @@ public class Main {
 
         projetoDao.atualizaProjeto(projeto, 7);
 
+        Tarefa tarefa = new Tarefa(2, "Tarefa de Teste", "Mateo", hoje.plusDays(5));
+  
         if (conn != null) {
             try {
                 conn.close();
