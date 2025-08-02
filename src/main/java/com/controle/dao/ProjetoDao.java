@@ -22,6 +22,7 @@ public class ProjetoDao {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+
             statement.setString(1, projeto.getNome());
             statement.setString(2, projeto.getDescricao());
             statement.setDate(3, Date.valueOf(projeto.getDataInicio()));
