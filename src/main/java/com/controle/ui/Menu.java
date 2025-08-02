@@ -9,6 +9,7 @@ import com.controle.model.Tarefa;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Menu {
@@ -29,7 +30,7 @@ public class Menu {
             switch (escolha) {
                 case 1:
                     System.out.println(
-                            "1. Criar projeto \n2. Listar projetos \n3. Atualizar projeto \n4. Deletar projeto");
+                            "1. Criar projeto \n2. Listar projetos \n3. Listar projetos com tarefas \n4. Estatísticas por status \n5. Atualizar projeto \n6. Deletar projeto");
                     System.out.println("Escolha uma opção: ");
                     int opcaoProjeto = scanner.nextInt();
 
@@ -60,6 +61,34 @@ public class Menu {
                             } else {
                                 for (Projeto p : projetos) {
                                     System.out.println(p.toString());
+                                }
+                            }
+                            break;
+
+                        case 3:
+                            Map<String, List<String>> projetosComTarefas = projetoDao.listarProjetoComTarefasRelacionadas();
+                            if (projetosComTarefas.isEmpty()) {
+                                System.out.println("Nenhum projeto encontrado");
+                            } else {
+                                for (Map.Entry<String, List<String>> entry : projetosComTarefas.entrySet()) {
+                                    String nomeProjeto = entry.getKey();
+                                    List<String> tarefas = entry.getValue();
+
+                                    System.out.println("\nProjeto: " + nomeProjeto);
+                                    for (String tarefa : tarefas) {
+                                        System.out.println("  - " + tarefa);
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 4:
+                            Map<String, Integer> estatisticas = projetoDao.obterEstatisticasPorStatus();
+                            if (estatisticas.isEmpty()) {
+                                System.out.println("Nenhum projeto encontrado");
+                            } else {
+                                for (Map.Entry<String, Integer> entry : estatisticas.entrySet()) {
+                                    System.out.println("Status: " + entry.getKey() + " - Quantidade: " + entry.getValue());
                                 }
                             }
                             break;
