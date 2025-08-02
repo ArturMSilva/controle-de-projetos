@@ -36,7 +36,10 @@ public class Menu {
 
                         LocalDate dataInicio = LocalDate.now();
 
-                        LocalDate dataFim = dataInicio.plusDays(30);
+                        System.out.println("Digite a duração do projeto (dias): ");
+                        int duracaoProjeto = scanner.nextInt();
+
+                        LocalDate dataFim = dataInicio.plusDays(duracaoProjeto);
 
                         Projeto projeto = new Projeto(nome, descricao, dataInicio, dataFim);
                         ProjetoDao projetoDao = new ProjetoDao(connection);
