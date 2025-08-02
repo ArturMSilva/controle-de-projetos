@@ -15,25 +15,7 @@ public class Main {
 
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectarBanco();
-        ProjetoDao projetoDao = new ProjetoDao(conn);
 
-        LocalDate hoje = LocalDate.now();
-        Projeto projeto = new Projeto("Rafael", "Teste de Atualização", hoje, hoje.plusDays(30));
-
-        projetoDao.criarProjeto(projeto);
-
-        projetoDao.deletarProjeto(7);
-
-        List<Projeto> projetos = projetoDao.buscarProjetos();
-
-        for (Projeto p : projetos) {
-            System.out.println(p.toString());
-        }
-
-        projetoDao.atualizaProjeto(projeto, 7);
-
-        Tarefa tarefa = new Tarefa(2, "Tarefa de Teste", "Mateo", hoje.plusDays(5));
-  
         if (conn != null) {
             try {
                 conn.close();
