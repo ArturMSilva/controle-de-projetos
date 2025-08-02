@@ -6,12 +6,14 @@ import com.controle.model.Projeto;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
     Conexao conexao = new Conexao();
     Connection connection = conexao.conectarBanco();
+    ProjetoDao projetoDao = new ProjetoDao(connection);
 
     public void menu() {
         boolean i = true;
@@ -44,8 +46,19 @@ public class Menu {
                             LocalDate dataFim = dataInicio.plusDays(duracaoProjeto);
 
                             Projeto projeto = new Projeto(nome, descricao, dataInicio, dataFim);
-                            ProjetoDao projetoDao = new ProjetoDao(connection);
                             projetoDao.criarProjeto(projeto);
+                            break;
+
+                        case 2:
+                            List<Projeto> projetos = projetoDao.buscarProjetos();
+                            if (projetos.isEmpty()){
+                                System.out.println("Nenhum projeto encontrado");
+                            }else {
+                                for (Projeto p : projetos){
+                                    System.out.println(p.toString());
+                                }
+                            }
+                            break;
                     }
                     break;
 
