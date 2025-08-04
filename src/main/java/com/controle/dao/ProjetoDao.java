@@ -47,6 +47,8 @@ public class ProjetoDao {
 
             while (result.next()) {
                 Projeto projeto = new Projeto();
+                
+                projeto.setId(result.getInt("projeto_id"));
                 projeto.setNome(result.getString("nome"));
                 projeto.setDescricao(result.getString("descricao"));
                 projeto.setDataInicio(result.getDate("data_inicio").toLocalDate());
