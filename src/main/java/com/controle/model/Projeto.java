@@ -10,7 +10,7 @@ public class Projeto {
     private String descricao;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private String status; // Em andamento, Concluído, Cancelado, Planejado
+    private String status;
     private List<Tarefa> tarefas;
 
     public Projeto() {
@@ -78,7 +78,6 @@ public class Projeto {
         this.tarefas = tarefas;
     }
 
-    // Métodos auxiliares
     public void adicionarTarefa(Tarefa tarefa) {
         this.tarefas.add(tarefa);
         tarefa.setProjetoId(this.projetoId);

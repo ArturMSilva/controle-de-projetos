@@ -13,13 +13,11 @@ public class Tarefa {
     private Boolean concluida;
     private List<HistoricoAlteracao> historico;
 
-    // Construtor padrão
     public Tarefa() {
         this.concluida = false;
         this.historico = new ArrayList<>();
     }
 
-    // Construtor com parâmetros principais
     public Tarefa(Integer projetoId, String titulo, String responsavel, LocalDate prazo) {
         this();
         this.projetoId = projetoId;
@@ -28,7 +26,6 @@ public class Tarefa {
         this.prazo = prazo;
     }
 
-    // Getters e Setters
     public Integer getTarefaId() {
         return tarefaId;
     }
@@ -85,7 +82,6 @@ public class Tarefa {
         this.historico = historico;
     }
 
-    // Métodos auxiliares
     public void adicionarHistorico(HistoricoAlteracao alteracao) {
         this.historico.add(alteracao);
         alteracao.setTarefaId(this.tarefaId);

@@ -10,12 +10,10 @@ public class HistoricoAlteracao {
     private String valorAntigo;
     private String valorNovo;
 
-    // Construtor padrão
     public HistoricoAlteracao() {
         this.dataAlteracao = LocalDateTime.now();
     }
 
-    // Construtor com parâmetros principais
     public HistoricoAlteracao(Integer tarefaId, String campoAlterado, String valorAntigo, String valorNovo) {
         this();
         this.tarefaId = tarefaId;
@@ -24,7 +22,6 @@ public class HistoricoAlteracao {
         this.valorNovo = valorNovo;
     }
 
-    // Getters e Setters
     public Integer getHistoricoId() {
         return historicoId;
     }
@@ -73,7 +70,6 @@ public class HistoricoAlteracao {
         this.valorNovo = valorNovo;
     }
 
-    // Métodos auxiliares
     public static HistoricoAlteracao criarAlteracao(Integer tarefaId, String campo, String valorAntigo, String valorNovo) {
         return new HistoricoAlteracao(tarefaId, campo, valorAntigo, valorNovo);
     }
