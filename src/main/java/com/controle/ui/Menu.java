@@ -61,10 +61,24 @@ public class Menu {
                         case 2:
                             List<Projeto> projetos = projetoDao.buscarProjetos();
                             if (projetos.isEmpty()) {
-                                System.out.println("Nenhum projeto encontrado");
+                                System.out.println("\nNenhum projeto encontrado");
                             } else {
+                                System.out.printf("Total de projetos encontrados: %d%n%n", projetos.size());
+                                
+                                int contador = 1;
                                 for (Projeto p : projetos) {
-                                    System.out.println(p.toString());
+                                    System.out.println("PROJETO " + contador );
+                                    System.out.printf("Nome: %s%n", p.getNome() != null ? p.getNome() : "N/A");
+                                    System.out.printf("Descrição: %s%n", p.getDescricao() != null ? p.getDescricao() : "N/A");
+                                    System.out.printf("Período: %s até %s%n", 
+                                        p.getDataInicio() != null ? p.getDataInicio().toString() : "N/A",
+                                        p.getDataFim() != null ? p.getDataFim().toString() : "N/A");
+                                    System.out.printf("Status: %s%n", p.getStatus() != null ? p.getStatus() : "N/A");
+                                    
+                                    if (contador < projetos.size()) {
+                                        System.out.println();
+                                    }
+                                    contador++;
                                 }
                             }
                             break;
