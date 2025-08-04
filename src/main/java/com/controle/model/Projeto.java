@@ -30,6 +30,10 @@ public class Projeto {
         return projetoId;
     }
 
+    public void setId(Integer projetoId) {
+        this.projetoId = projetoId;
+    }
+
     public String getNome() {
         return nome;
     }
