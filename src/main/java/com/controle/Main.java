@@ -12,7 +12,7 @@ public class Main {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectarBanco();
 
-        Menu menu = new Menu();
+        Menu menu = new Menu(conn); 
         menu.menu();
 
         if (conn != null) {
