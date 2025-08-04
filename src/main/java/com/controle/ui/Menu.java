@@ -1,6 +1,5 @@
 package com.controle.ui;
 
-import com.controle.dao.Conexao;
 import com.controle.dao.ProjetoDao;
 import com.controle.dao.TarefaDao;
 import com.controle.model.Projeto;
@@ -14,23 +13,28 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
-    Conexao conexao = new Conexao();
-    Connection connection = conexao.conectarBanco();
-    ProjetoDao projetoDao = new ProjetoDao(connection);
-    TarefaDao tarefaDao = new TarefaDao(connection);
+    Connection connection;
+    ProjetoDao projetoDao;
+    TarefaDao tarefaDao;
+
+    public Menu(Connection connection) {
+        this.connection = connection;
+        this.projetoDao = new ProjetoDao(connection);
+        this.tarefaDao = new TarefaDao(connection);
+    }
 
     public void menu() {
         boolean i = true;
 
         while (i) {
-            System.out.println("1. Projetos \n2. Tarefas \n3. Encerrar programa");
-            System.out.println("Escolha uma opção: ");
+            System.out.println("\n1. Projetos \n2. Tarefas \n3. Encerrar programa");
+            System.out.println("\nEscolha uma opção: ");
             int escolha = scanner.nextInt();
 
             switch (escolha) {
                 case 1:
                     System.out.println(
-                            "1. Criar projeto \n2. Listar projetos \n3. Listar projetos com tarefas \n4. Estatísticas por status \n5. Atualizar projeto \n6. Deletar projeto");
+                            "\n1. Criar projeto \n2. Listar projetos \n3. Listar projetos com tarefas \n4. Estatísticas por status \n5. Calcular progresso \n6. Atualizar projeto \n7. Deletar projeto");
                     System.out.println("Escolha uma opção: ");
                     int opcaoProjeto = scanner.nextInt();
 
@@ -92,6 +96,26 @@ public class Menu {
                                 }
                             }
                             break;
+
+                        case 5:
+                            System.out.println("Digite o ID do projeto para calcular o progresso: ");
+                            int projetoId = scanner.nextInt();
+                            double progresso = projetoDao.calcularProgressoProjeto(projetoId);
+                            
+                            System.out.println("ID do Projeto: " + projetoId);
+                            System.out.println("Progresso: " + String.format("%.2f", progresso) + "%");
+                            
+                            int barraCompleta = (int) (progresso / 5); 
+                            System.out.print("Barra: [");
+                            for (int j = 0; j < 20; j++) {
+                                if (j < barraCompleta) {
+                                    System.out.print("█");
+                                } else {
+                                    System.out.print("░");
+                                }
+                            }
+                            System.out.println("] " + String.format("%.1f", progresso) + "%");
+                            break;
                     }
                     break;
 
@@ -134,7 +158,17 @@ public class Menu {
                             System.out.println("Opção inválida...");
                             break;
                     }
-            }
+                    break;
+
+                case 3:
+                    System.out.println("Encerrando programa...");
+                    i = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida...");
+                    break;
+            }   
         }
     }
 }
