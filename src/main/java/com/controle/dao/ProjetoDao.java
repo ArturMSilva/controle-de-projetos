@@ -154,4 +154,27 @@ public class ProjetoDao {
 
         return estatisticas;
     }
+
+    public double calcularProgressoProjeto(int projetoId) {
+        String sql = "SELECT calcular_progresso_projeto(?) as progresso";
+        double progresso = 0.0;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, projetoId);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                progresso = result.getDouble("progresso");
+            }
+
+            System.out.println("Progresso do projeto ID " + projetoId + ": " + String.format("%.2f", progresso) + "%");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao calcular progresso do projeto: " + e.getMessage());
+            return 0.0;
+        }
+
+        return progresso;
+    }
 }
