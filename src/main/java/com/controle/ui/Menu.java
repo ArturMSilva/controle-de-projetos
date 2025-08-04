@@ -5,6 +5,7 @@ import com.controle.dao.TarefaDao;
 import com.controle.model.Projeto;
 import com.controle.model.Tarefa;
 
+import java.security.Signature;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
@@ -130,6 +131,21 @@ public class Menu {
                             }
                             System.out.println("] " + String.format("%.1f", progresso) + "%");
                             break;
+
+                        case 6:
+                            List<Projeto> projetos1 = projetoDao.buscarProjetos();
+
+                            System.out.println("Qual o ID do projeto que deseja atualizar? ");
+                            int ID = scanner.nextInt();
+
+                            System.out.println("Digite o novo nome do projeto: ");
+                            String novoNome = scanner.nextLine();
+
+                            System.out.println("Digite a nova descrição do projeto: ");
+                            String novaDesc = scanner.nextLine();
+
+                            System.out.println();
+                            break;
                     }
                     break;
 
@@ -145,6 +161,7 @@ public class Menu {
                             Tarefa tarefa = new Tarefa();
                             System.out.println("Digite o ID do projeto: ");
                             tarefa.setProjetoId(scanner.nextInt());
+                            scanner.nextLine();
 
                             System.out.println("Digite o título da tarefa: ");
                             tarefa.setTitulo(scanner.nextLine());
