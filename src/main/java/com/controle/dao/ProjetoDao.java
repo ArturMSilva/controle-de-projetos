@@ -47,7 +47,7 @@ public class ProjetoDao {
 
             while (result.next()) {
                 Projeto projeto = new Projeto();
-                
+
                 projeto.setId(result.getInt("projeto_id"));
                 projeto.setNome(result.getString("nome"));
                 projeto.setDescricao(result.getString("descricao"));
@@ -65,6 +65,32 @@ public class ProjetoDao {
         }
 
         return projetos;
+    }
+
+    public Projeto buscarProjetoPorId(int id) {
+        String sql = "SELECT * FROM projetos WHERE projeto_id = ?";
+        Projeto projeto = null;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                projeto = new Projeto();
+                projeto.setId(result.getInt("projeto_id"));
+                projeto.setNome(result.getString("nome"));
+                projeto.setDescricao(result.getString("descricao"));
+                projeto.setDataInicio(result.getDate("data_inicio").toLocalDate());
+                projeto.setDataFim(result.getDate("data_fim").toLocalDate());
+                projeto.setStatus(result.getString("status"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar projeto por ID: " + e.getMessage());
+        }
+
+        return projeto;
     }
 
     public Projeto atualizaProjeto(Projeto projeto, int id) {
