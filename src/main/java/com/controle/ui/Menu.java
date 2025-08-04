@@ -127,18 +127,6 @@ public class Menu {
                             break;
 
                         case 6:
-                            List<Projeto> projetos1 = projetoDao.buscarProjetos();
-
-                            System.out.println("Qual o ID do projeto que deseja atualizar? ");
-                            int ID = scanner.nextInt();
-
-                            System.out.println("Digite o novo nome do projeto: ");
-                            String novoNome = scanner.nextLine();
-
-                            System.out.println("Digite a nova descrição do projeto: ");
-                            String novaDesc = scanner.nextLine();
-
-                            System.out.println();
                             break;
                     }
                     break;
