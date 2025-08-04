@@ -5,7 +5,6 @@ import com.controle.dao.TarefaDao;
 import com.controle.model.Projeto;
 import com.controle.model.Tarefa;
 
-import java.security.Signature;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
