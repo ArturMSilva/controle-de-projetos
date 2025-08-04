@@ -95,7 +95,6 @@ public class Projeto {
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
                 ", status='" + status + '\'' +
-                ", numTarefas=" + (tarefas != null ? tarefas.size() : 0) +
                 '}';
     }
 }
