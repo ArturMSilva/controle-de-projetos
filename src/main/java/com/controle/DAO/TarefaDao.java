@@ -44,6 +44,7 @@ public class TarefaDao {
 
             while (result.next()) {
                 Tarefa tarefa = new Tarefa();
+                tarefa.setTarefaId(result.getInt("tarefa_id"));
                 tarefa.setProjetoId(result.getInt("projeto_id"));
                 tarefa.setTitulo(result.getString("titulo"));
                 tarefa.setResponsavel(result.getString("responsavel"));
@@ -100,5 +101,23 @@ public class TarefaDao {
         }
 
         return quantidadeTarefas;
+    }
+
+    public void deletarTarefa(int tarefaId) {
+        String sql = "DELETE FROM tarefas WHERE tarefa_id = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, tarefaId);
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Tarefa deletada com sucesso!");
+            } else {
+                System.out.println("Nenhuma tarefa encontrada com o ID informado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar tarefa: " + e.getMessage());
+        }
     }
 }
