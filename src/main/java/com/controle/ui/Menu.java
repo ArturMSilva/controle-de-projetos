@@ -1,7 +1,9 @@
 package com.controle.ui;
 
+import com.controle.dao.HistoricoAlteracaoDao;
 import com.controle.dao.ProjetoDao;
 import com.controle.dao.TarefaDao;
+import com.controle.model.HistoricoAlteracao;
 import com.controle.model.Projeto;
 import com.controle.model.Tarefa;
 
@@ -16,18 +18,20 @@ public class Menu {
     Connection connection;
     ProjetoDao projetoDao;
     TarefaDao tarefaDao;
+    HistoricoAlteracaoDao historicoDao;
 
     public Menu(Connection connection) {
         this.connection = connection;
         this.projetoDao = new ProjetoDao(connection);
         this.tarefaDao = new TarefaDao(connection);
+        this.historicoDao = new HistoricoAlteracaoDao(connection);
     }
 
     public void menu() {
         boolean i = true;
 
         while (i) {
-            System.out.println("\n1. Projetos \n2. Tarefas \n3. Encerrar programa");
+            System.out.println("\n1. Projetos \n2. Tarefas \n3. Histórico de Alterações \n4. Encerrar programa");
             System.out.println("\nEscolha uma opção: ");
             int escolha = scanner.nextInt();
 
@@ -348,6 +352,72 @@ public class Menu {
                     break;
 
                 case 3:
+                    System.out.println("\n1. Exibir todo o histórico \n2. Exibir histórico por tarefa \n3. Voltar ao menu principal");
+                    System.out.println("Escolha uma opção: ");
+                    int opcaoHistorico = scanner.nextInt();
+
+                    switch (opcaoHistorico) {
+                        case 1:
+                            List<HistoricoAlteracao> todoHistorico = historicoDao.buscarHistorico();
+                            if (todoHistorico.isEmpty()) {
+                                System.out.println("\nNenhum histórico de alteração encontrado");
+                            } else {
+                                System.out.printf("Total de alterações encontradas: %d%n%n", todoHistorico.size());
+                                
+                                for (HistoricoAlteracao h : todoHistorico) {
+                                    System.out.printf("ID: %d%n", h.getHistoricoId() != null ? h.getHistoricoId() : 0);
+                                    System.out.printf("Tarefa ID: %d%n", h.getTarefaId() != null ? h.getTarefaId() : 0);
+                                    System.out.printf("Data/Hora: %s%n", h.getDataAlteracao() != null ? h.getDataAlteracao().toString() : "N/A");
+                                    System.out.printf("Campo Alterado: %s%n", h.getCampoAlterado() != null ? h.getCampoAlterado() : "N/A");
+                                    System.out.printf("Valor Anterior: %s%n", h.getValorAntigo() != null ? h.getValorAntigo() : "N/A");
+                                    System.out.printf("Valor Novo: %s%n\n", h.getValorNovo() != null ? h.getValorNovo() : "N/A\n");
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            List<Tarefa> tarefasDisponiveis = tarefaDao.buscarTarefas();
+                            if (tarefasDisponiveis.isEmpty()) {
+                                System.out.println("Nenhuma tarefa encontrada.");
+                                break;
+                            }
+                            
+                            System.out.println("\nTarefas disponíveis:");
+                            for (Tarefa t : tarefasDisponiveis) {
+                                System.out.printf("ID: %d - Título: %s%n", 
+                                    t.getTarefaId() != null ? t.getTarefaId() : 0,
+                                    t.getTitulo() != null ? t.getTitulo() : "N/A");
+                            }
+                            
+                            System.out.println("\nDigite o ID da tarefa para ver o histórico: ");
+                            int tarefaIdHistorico = scanner.nextInt();
+                            
+                            List<HistoricoAlteracao> historicoPorTarefa = historicoDao.buscarHistoricoPorTarefa(tarefaIdHistorico);
+                            if (historicoPorTarefa.isEmpty()) {
+                                System.out.println("\nNenhum histórico encontrado para esta tarefa");
+                            } else {
+                                System.out.printf("Histórico da tarefa %d (%d alterações):%n%n", tarefaIdHistorico, historicoPorTarefa.size());
+                                
+                                for (HistoricoAlteracao h : historicoPorTarefa) {
+                                    System.out.printf("Data/Hora: %s%n", h.getDataAlteracao() != null ? h.getDataAlteracao().toString() : "N/A");
+                                    System.out.printf("Campo: %s%n", h.getCampoAlterado() != null ? h.getCampoAlterado() : "N/A");
+                                    System.out.printf("De: %s => Para: %s%n\n", 
+                                        h.getValorAntigo() != null ? h.getValorAntigo() : "N/A\n",
+                                        h.getValorNovo() != null ? h.getValorNovo() : "N/A\n");
+                                }
+                            }
+                            break;
+
+                        case 3:
+                            break;
+
+                        default:
+                            System.out.println("Opção inválida...");
+                            break;
+                    }
+                    break;
+
+                case 4:
                     System.out.println("Encerrando programa...");
                     i = false;
                     break;
