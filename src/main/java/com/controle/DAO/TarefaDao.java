@@ -120,4 +120,22 @@ public class TarefaDao {
             System.out.println("Erro ao deletar tarefa: " + e.getMessage());
         }
     }
+
+    public void concluirTarefa(int tarefaId) {
+        String sql = "UPDATE tarefas SET concluida = true WHERE tarefa_id = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, tarefaId);
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Tarefa marcada como concluída com sucesso!");
+            } else {
+                System.out.println("Nenhuma tarefa encontrada com o ID informado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao concluir tarefa: " + e.getMessage());
+        }
+    }
 }
