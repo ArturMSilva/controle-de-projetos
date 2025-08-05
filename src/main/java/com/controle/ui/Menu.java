@@ -172,6 +172,20 @@ public class Menu {
                             }
 
                             break;
+
+                        case 7:
+                            List<Projeto> projetos2 = projetoDao.buscarProjetos();
+
+                            for (Projeto p : projetos2){
+                                System.out.printf("Projeto ID: %d%n", p.getProjetoId() != null ? p.getProjetoId() : 0);
+                                System.out.printf("Nome: %s%n", p.getNome() != null ? p.getNome() : "N/A");
+                            }
+
+                            System.out.println("Digite o id do projeto que deseja deletar: ");
+                            int id = scanner.nextInt();
+
+                            System.out.println("Projeto deletado com sucesso");
+                            projetoDao.deletarProjeto(id);
                     }
                     break;
 
