@@ -156,7 +156,7 @@ public class Menu {
 
                                 System.out.println("Digite a quantidade de dias a serem adicionados ao prazo: ");
                                 int dias = scanner.nextInt();
-                                scanner.nextLine(); // Consumir quebra de linha
+                                scanner.nextLine();
 
                                 LocalDate novoPrazo = data.plusDays(dias);
 
@@ -190,16 +190,28 @@ public class Menu {
                     break;
 
                 case 2:
-                    System.out.println(
-                            "1. Criar tarefa \n2. Listar tarefas \n3. Atualizar tarefa \n4. Deletar tarefa");
+                    System.out.println("\n1. Criar tarefa \n2. Listar tarefas \n3. Atualizar tarefa \n4. Deletar tarefa \n5. Voltar ao menu principal");
                     System.out.println("Escolha uma opção: ");
                     int opcaoTarefa = scanner.nextInt();
 
                     scanner.nextLine();
                     switch (opcaoTarefa) {
                         case 1:
+                            List<Projeto> projetosDisponiveis = projetoDao.buscarProjetos();
+                            if (projetosDisponiveis.isEmpty()) {
+                                System.out.println("Nenhum projeto encontrado. É necessário criar um projeto primeiro.");
+                                break;
+                            }
+                            
+                            System.out.println("\nProjetos disponíveis:");
+                            for (Projeto p : projetosDisponiveis) {
+                                System.out.printf("ID: %d - Nome: %s%n", 
+                                    p.getProjetoId() != null ? p.getProjetoId() : 0,
+                                    p.getNome() != null ? p.getNome() : "N/A");
+                            }
+                            
                             Tarefa tarefa = new Tarefa();
-                            System.out.println("Digite o ID do projeto: ");
+                            System.out.println("\nDigite o ID do projeto: ");
                             tarefa.setProjetoId(scanner.nextInt());
                             scanner.nextLine();
 
@@ -216,13 +228,117 @@ public class Menu {
                             break;
 
                         case 2:
-                            System.out.println("Encerrando programa...");
-                            i = false;
+                            List<Tarefa> tarefas = tarefaDao.buscarTarefas();
+                            if (tarefas.isEmpty()) {
+                                System.out.println("\nNenhuma tarefa encontrada");
+                            } else {
+                                System.out.printf("Total de tarefas encontradas: %d%n%n", tarefas.size());
+                                
+                                for (Tarefa t : tarefas) {
+                                    System.out.printf("Tarefa ID: %d%n", t.getTarefaId() != null ? t.getTarefaId() : 0);
+                                    System.out.printf("Projeto ID: %d%n", t.getProjetoId() != null ? t.getProjetoId() : 0);
+                                    System.out.printf("Título: %s%n", t.getTitulo() != null ? t.getTitulo() : "N/A");
+                                    System.out.printf("Responsável: %s%n", t.getResponsavel() != null ? t.getResponsavel() : "N/A");
+                                    System.out.printf("Prazo: %s%n", t.getPrazo() != null ? t.getPrazo().toString() : "N/A");
+                                    System.out.printf("Status: %s%n", t.getConcluida() != null && t.getConcluida() ? "Concluída" : "Pendente");
+                                    
+                                    if (t.isPrazoVencido()) {
+                                        System.out.println("⚠️ PRAZO VENCIDO!");
+                                    }
+                                    System.out.println();
+                                }
+                            }
                             break;
 
                         case 3:
-                            System.out.println("Encerrando programa...");
-                            i = false;
+                            List<Tarefa> tarefasParaAtualizar = tarefaDao.buscarTarefas();
+                            if (tarefasParaAtualizar.isEmpty()) {
+                                System.out.println("Nenhuma tarefa encontrada.");
+                                break;
+                            }
+                            
+                            System.out.println("\nTarefas disponíveis:");
+                            for (Tarefa t : tarefasParaAtualizar) {
+                                System.out.printf("ID: %d - Título: %s - Status: %s%n", 
+                                    t.getTarefaId() != null ? t.getTarefaId() : 0,
+                                    t.getTitulo() != null ? t.getTitulo() : "N/A",
+                                    t.getConcluida() != null && t.getConcluida() ? "Concluída" : "Pendente");
+                            }
+                            
+                            System.out.println("\nDigite o ID da tarefa que deseja atualizar: ");
+                            int idTarefa = scanner.nextInt();
+                            scanner.nextLine();
+                            
+                            Tarefa tarefaSelecionada = null;
+                            for (Tarefa t : tarefasParaAtualizar) {
+                                if (t.getTarefaId() != null && t.getTarefaId() == idTarefa) {
+                                    tarefaSelecionada = t;
+                                    break;
+                                }
+                            }
+                            
+                            if (tarefaSelecionada != null) {
+                                System.out.println("Digite o novo título da tarefa (atual: " + tarefaSelecionada.getTitulo() + "): ");
+                                String novoTitulo = scanner.nextLine();
+                                
+                                System.out.println("Digite o novo responsável (atual: " + tarefaSelecionada.getResponsavel() + "): ");
+                                String novoResponsavel = scanner.nextLine();
+                                
+                                System.out.println("Digite o novo prazo (yyyy-MM-dd) (atual: " + tarefaSelecionada.getPrazo() + "): ");
+                                LocalDate novoPrazo = LocalDate.parse(scanner.nextLine());
+                                
+                                System.out.println("A tarefa está concluída? (s/n) (atual: " + 
+                                    (tarefaSelecionada.getConcluida() ? "Sim" : "Não") + "): ");
+                                String concluida = scanner.nextLine();
+                                boolean isConcluida = concluida.toLowerCase().equals("s") || concluida.toLowerCase().equals("sim");
+                                
+                                Tarefa tarefaAtualizada = new Tarefa();
+                                tarefaAtualizada.setTitulo(novoTitulo);
+                                tarefaAtualizada.setResponsavel(novoResponsavel);
+                                tarefaAtualizada.setPrazo(novoPrazo);
+                                tarefaAtualizada.setConcluida(isConcluida);
+                                
+                                tarefaDao.atualizarTarefa(tarefaAtualizada, idTarefa);
+                            } else {
+                                System.out.println("Tarefa não encontrada.");
+                            }
+                            break;
+
+                        case 4:
+                            List<Tarefa> tarefasParaDeletar = tarefaDao.buscarTarefas();
+                            if (tarefasParaDeletar.isEmpty()) {
+                                System.out.println("Nenhuma tarefa encontrada.");
+                                break;
+                            }
+                            
+                            System.out.println("\nTarefas disponíveis:");
+                            for (Tarefa t : tarefasParaDeletar) {
+                                System.out.printf("ID: %d - Título: %s - Responsável: %s%n", 
+                                    t.getTarefaId() != null ? t.getTarefaId() : 0,
+                                    t.getTitulo() != null ? t.getTitulo() : "N/A",
+                                    t.getResponsavel() != null ? t.getResponsavel() : "N/A");
+                            }
+                            
+                            System.out.println("\nDigite o ID da tarefa que deseja deletar: ");
+                            int idTarefaDeletar = scanner.nextInt();
+                            
+                            boolean tarefaEncontrada = false;
+                            for (Tarefa t : tarefasParaDeletar) {
+                                if (t.getTarefaId() != null && t.getTarefaId() == idTarefaDeletar) {
+                                    tarefaEncontrada = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (tarefaEncontrada) {
+                                tarefaDao.deletarTarefa(idTarefaDeletar);
+                            } else {
+                                System.out.println("Tarefa não encontrada.");
+                            }
+                            break;
+
+                        case 5:
+                            System.out.println("Voltando ao menu principal...");
                             break;
 
                         default:
