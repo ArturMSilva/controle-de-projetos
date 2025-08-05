@@ -126,6 +126,51 @@ public class Menu {
                             break;
 
                         case 6:
+                            List<Projeto> projetos1 = projetoDao.buscarProjetos();
+
+                            for (Projeto p : projetos1){
+                                System.out.printf("Projeto ID: %d%n", p.getProjetoId() != null ? p.getProjetoId() : 0);
+                                System.out.printf("Nome: %s%n", p.getNome() != null ? p.getNome() : "N/A");
+                            }
+
+                            System.out.println("Digite o id do projeto que deseja atualizar: ");
+                            int ID = scanner.nextInt();
+                            scanner.nextLine();
+
+                            Projeto projetoSelecionado = null;
+                            for (Projeto p : projetos1){
+                                if (p.getProjetoId() == ID){
+                                    projetoSelecionado = p;
+                                    break;
+                                }
+                            }
+
+                            if (projetoSelecionado != null){
+                                System.out.println("Digite o novo nome do projeto: ");
+                                String novoNome = scanner.nextLine();
+
+                                System.out.println("Digite a nova descrição do projeto: ");
+                                String novaDescricao = scanner.nextLine();
+
+                                LocalDate data = projetoSelecionado.getDataInicio();
+
+                                System.out.println("Digite a quantidade de dias a serem adicionados ao prazo: ");
+                                int dias = scanner.nextInt();
+                                scanner.nextLine(); // Consumir quebra de linha
+
+                                LocalDate novoPrazo = data.plusDays(dias);
+
+                                System.out.println("Digite o novo status do projeto: ");
+                                String novoStatus = scanner.nextLine();
+
+                                Projeto projetoAtualizado = new Projeto(novoNome, novaDescricao, data, novoPrazo);
+                                projetoAtualizado.setStatus(novoStatus);
+
+                                projetoDao.atualizaProjeto(projetoAtualizado, ID);
+                            }else {
+                                System.out.println("Projeto não encontrado");
+                            }
+
                             break;
                     }
                     break;
